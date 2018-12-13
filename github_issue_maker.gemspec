@@ -9,6 +9,8 @@ Gem::Specification.new do |s|
   s.files       = ['lib/github_issue_maker.rb']
   s.homepage    = 'http://rubygems.org/gems/github_issue_maker'
   s.license     = 'MIT'
+  s.add_dependency 'aws-sdk-core'
+  s.add_dependency 'aws-sdk-s3'
   s.add_dependency 'github_api'
   s.add_development_dependency 'rspec'
 end

@@ -5,9 +5,9 @@ The issue model needs the following:
 - git hash column
 - screenshot column
 - url column
-- method to call the associated application user
+- method to call the current application user's ActiveRecord instance, which should respond to `id` and either `email` or `login`.
 
-You will need to configure an options hash to pass to github_issue_maker with the following parameters set:
+You will also need to configure an options hash to pass to github_issue_maker with the following parameters set:
 ```
 github_issue_maker_config_options = {
   instance_details: { description_column: :your_description_column, 
@@ -19,14 +19,13 @@ github_issue_maker_config_options = {
                       user:         your_github_username,
                       repo:         your_github_repo,
                       labels:       an_array_of_labels_for_your_created_github_issue,
-                      issue_title:  a_title_for_your_created_github_issue},
+                      issue_title:  a_title_for_your_created_github_issue },
   s3_details:       { bucket: your_s3_images_bucket,
                       region: your_s3_region } 
 }
 
 ```
-
-Put this in the issue model to gain access to `create_github_issue!`:
+Then paste this in the issue model to gain access to the `create_github_issue!` method:
 ```
 require 'github_issue_maker'
 GITHUB_ISSUE_MAKER_CONFIG = github_issue_maker_config_options

@@ -27,6 +27,5 @@ github_issue_maker_config_options = {
 ```
 Then paste this in the issue model to gain access to the `create_github_issue!` method:
 ```
-require 'github_issue_maker'
 include GithubIssueMaker
 GithubIssueMaker::GITHUB_ISSUE_MAKER_CONFIG = github_issue_maker_config_options

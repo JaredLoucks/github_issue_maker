@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'github_issue_maker'
-  s.version     = '0.0.0'
-  s.date        = '2018-12-12'
+  s.version     = '0.0.1'
+  s.date        = '2018-12-13'
   s.summary     = 'Creates GitHub Issues from a UserIssue model'
   s.description = 'A GitHub Issue creation gem'
   s.authors     = ['Jared Loucks']

@@ -62,4 +62,19 @@ describe GithubIssueMaker do
                                       "\n \n# HEAD \n test git hash")
     end
   end
+
+  describe 'decoded issue screenshot' do
+    before do
+      @user_issue.instance_variable_set(:@instance_details, GITHUB_ISSUE_MAKER_CONFIG[:instance_details])
+    end
+
+    it 'removes base 64 data from image' do
+      image = 'test_image'
+      decoded_image = Base64.decode64(image)
+      encoded_image = "data:image/image_name;base64,#{image}"
+      @user_issue.stub(:screenshot).and_return(encoded_image)
+
+      expect(@user_issue.decoded_issue_screenshot).to eq(decoded_image)
+    end
+  end
 end

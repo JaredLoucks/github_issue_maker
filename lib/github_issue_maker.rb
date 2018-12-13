@@ -2,17 +2,26 @@ module GithubIssueMaker
   def create_github_issue!
     set_config_variables
 
-    s3 = Aws::S3::Client.new
-    s3_body = Base64.decode64(self.send(@instance_details[:screenshot_column]).gsub(/^data:image\/\w+;base64,/, ''))
     file_name = "#{SecureRandom.hex}/issue.png"
-    s3.put_object(bucket: @s3_details[:bucket], acl: 'public-read', key: file_name, body: s3_body,
-                  content_type: 'image/png')
-
+    create_s3_object(file_name)
     github = Github.new oauth_token: @github_details[:access_token]
-    issue = github.issues.create(user: @github_details[:user], repo: @github_details[:repo],
-                                 title: @github_details[:issue_title], body: github_issue_body(file_name),
-                                 labels: @github_details[:labels])
+    issue_body = github_issue_body(file_name)
+    issue = github.issues.create(user: @github_details[:user], repo: @github_details[:repo], body: issue_body,
+                                 title: @github_details[:issue_title], labels: @github_details[:labels])
     issue[:html_url]
+  end
+
+  def create_s3_object(file_name)
+    s3 = Aws::S3::Client.new
+    s3_body = decoded_issue_screenshot
+    s3.put_object(bucket: @s3_details[:bucket], acl: 'public-read', key: file_name, body: s3_body, content_type: 'image/png')
+  end
+
+  def decoded_issue_screenshot
+    screenshot = self.send(@instance_details[:screenshot_column])
+    base_64_data_regex = /^data:image\/\w+;base64,/
+    screenshot.gsub!(base_64_data_regex, '')
+    Base64.decode64(screenshot)
   end
 
   def github_issue_body(screenshot_url)

@@ -1,4 +1,8 @@
 module GithubIssueMaker
+  require 'aws-sdk-core'
+  require 'aws-sdk-s3'
+  require 'github_api'
+
   def create_github_issue!
     set_config_variables
 
